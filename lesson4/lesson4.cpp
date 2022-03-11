@@ -6,6 +6,9 @@
 #include <locale>
 #include <vector>
 #include <list>
+#include <stdlib.h>
+#include <time.h>
+#include <deque>
 #include <algorithm>
 #include <string_view>
 using namespace std;
@@ -35,13 +38,15 @@ void Zadanie1()
 
     list<double> l{ 1,1.18, 8,88.5 };
 
-    Print(l);
+    deque<char> d{'a','e','o','u'};
+    
+    Print(d);
     cout << endl << "Input value for insert" << endl;
-    double i;
+    char i;
     cin >> i;
 
-    insert_sorted(l, i);
-    Print(l);
+    insert_sorted(d, i);
+    Print(d);
  
 };
 
@@ -51,9 +56,30 @@ void Zadanie2()
     /*--------------------------------------------------
     
     ----------------------------------------------------*/
+    srand((unsigned)time(NULL));
 
-    
+    vector<double> a(100);
+    vector<int> b;
 
+    generate(a.begin(), a.end(), []() {return (double)rand() / RAND_MAX * 100; });
+   
+    copy(a.begin(), a.end(), ostream_iterator<double>{cout, "  "});
+
+    auto doible_to_int = [](double i) {int int_i = (int)i; return int_i; };
+    transform(a.begin(), a.end(), back_inserter(b), doible_to_int);
+
+    cout << endl;
+    copy(b.begin(), b.end(), ostream_iterator<int>{cout, "  "});
+   
+    double error{ 0.0 };
+    size_t i{ 0 };
+    for_each(a.begin(), a.end(), [=, &error,&i](const auto& elem_a) 
+        {error += (elem_a - b.at(i));
+         i++; 
+        });
+
+    cout << endl;
+    cout << "Error = " << error;
 
 };
 
